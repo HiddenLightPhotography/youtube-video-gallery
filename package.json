@@ -1,0 +1,23 @@
+{
+  "name": "youtube-gallery-site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HiddenLightPhotography/youtube-video-gallery.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HiddenLightPhotography/youtube-video-gallery/issues"
+  },
+  "homepage": "https://github.com/HiddenLightPhotography/youtube-video-gallery#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.8.4"
+  }
+}
