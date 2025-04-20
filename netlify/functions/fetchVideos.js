@@ -3,7 +3,7 @@ const axios = require("axios");
 exports.handler = async function (event, context) {
   const apiKey = process.env.YOUTUBE_API_KEY; // ← this reads your environment variable set in Netlify
   const channelId = "UCJSmwdPEmRhvaWIpF0azaOQ";
-  const maxResults = 10;
+  const maxResults = 160;
 
   const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${maxResults}`;
 
