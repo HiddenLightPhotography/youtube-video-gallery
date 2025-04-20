@@ -21,7 +21,7 @@
   <script>
     let videoData = {};
     async function fetchVideos() {
-      const res = await fetch('videos.json');
+      const res = await fetch('/api/fetchVideos');
       videoData = await res.json();
       renderVideos(videoData);
     }
