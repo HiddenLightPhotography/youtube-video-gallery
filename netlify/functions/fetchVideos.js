@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 exports.handler = async function (event, context) {
-  const apiKey = "AIzaSyAWWWWBmf-DYEkq9RgAkTfLSitv8i2iBWA";
+  const apiKey = process.env.YOUTUBE_API_KEY;
   const channelId = "UCDH-CyR4FjZ95h3kL91Krkw"; // Replace with your channel ID
   const maxResults = 10;
 
