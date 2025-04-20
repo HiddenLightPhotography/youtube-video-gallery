@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"
+  publish = "public"
+
+[[redirects]]
+  from = "/api/fetchVideos"
+  to = "/.netlify/functions/fetchVideos"
+  status = 200
