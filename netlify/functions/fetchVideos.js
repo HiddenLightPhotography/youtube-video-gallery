@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 exports.handler = async function (event, context) {
-  const apiKey = process.env.YT_API_KEY; // ← this reads your environment variable set in Netlify
+  const apiKey = process.env.YOUTUBE_API_KEY; // ← this reads your environment variable set in Netlify
   const channelId = "UCDH-CyR4FjZ95h3kL91Krkw";
   const maxResults = 10;
 
