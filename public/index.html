@@ -7,56 +7,60 @@
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 2rem; }
     h1 { text-align: center; }
     input { width: 100%; padding: 0.5rem; font-size: 1rem; margin-bottom: 2rem; }
-    .category { margin-bottom: 3rem; }
-    .videos { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .video-card { background: #222; padding: 1rem; border-radius: 8px; width: 240px; box-shadow: 0 0 6px #000; }
+    .videos { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .video-card { background: #222; padding: 1rem; border-radius: 8px; width: 240px; box-shadow: 0 0 6px #000; text-align: center; }
     .video-card img { width: 100%; border-radius: 4px; }
     .video-card h3 { font-size: 1rem; margin-top: 0.5rem; color: #00bcd4; }
+    .error { color: red; text-align: center; margin-top: 1rem; }
   </style>
 </head>
 <body>
   <h1>🎥 Hidden Light Photography</h1>
   <input type="text" id="search" placeholder="Search videos..." oninput="filterVideos()">
   <div id="gallery"></div>
+  <div class="error" id="error"></div>
+
   <script>
-    let videoData = {};
+    let videoData = [];
+
     async function fetchVideos() {
-      const res = await fetch('/api/fetchVideos');
-      videoData = await res.json();
-      renderVideos(videoData);
+      try {
+        const res = await fetch('/api/fetchVideos');
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+        videoData = await res.json();
+        renderVideos(videoData);
+      } catch (err) {
+        document.getElementById('error').textContent = "Failed to load videos. Please try again later.";
+        console.error("🚨 Error loading videos:", err);
+      }
     }
+
     function filterVideos() {
       const query = document.getElementById('search').value.toLowerCase();
-      const filtered = {};
-      for (const cat in videoData) {
-        const matching = videoData[cat].filter(v => v.title.toLowerCase().includes(query));
-        if (matching.length) filtered[cat] = matching;
-      }
+      const filtered = videoData.filter(v => v.title.toLowerCase().includes(query));
       renderVideos(filtered);
     }
-    function renderVideos(data) {
+
+    function renderVideos(videos) {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
-      for (const cat in data) {
-        const section = document.createElement('div');
-        section.className = 'category';
-        section.innerHTML = `<h2>${cat}</h2>`;
-        const container = document.createElement('div');
-        container.className = 'videos';
-        data[cat].forEach(video => {
-          const card = document.createElement('div');
-          card.className = 'video-card';
-          card.innerHTML = `
-            <a href="${video.url}" target="_blank">
-              <img src="${video.thumbnail}" alt="${video.title}">
-              <h3>${video.title}</h3>
-            </a>`;
-          container.appendChild(card);
-        });
-        section.appendChild(container);
-        gallery.appendChild(section);
+      if (videos.length === 0) {
+        gallery.innerHTML = '<p style="text-align:center;">No videos found.</p>';
+        return;
       }
+      videos.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank">
+            <img src="${video.thumbnail}" alt="${video.title}">
+            <h3>${video.title}</h3>
+          </a>
+        `;
+        gallery.appendChild(card);
+      });
     }
+
     fetchVideos();
   </script>
 </body>
