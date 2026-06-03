@@ -574,8 +574,9 @@
       if(!videoUrl) return;
 
       /*
-        When this app is embedded in GoDaddy, ask the parent page to open YouTube.
-        This avoids YouTube trying to load inside the iframe context.
+        If embedded inside GoDaddy, ask the parent page to open YouTube.
+        We use "*" here because GoDaddy may serve the parent as www/non-www
+        or through an internal wrapper. The parent page still validates the message.
       */
       try{
         if(window.parent && window.parent !== window){
@@ -584,7 +585,7 @@
               type: "HLP_OPEN_VIDEO",
               url: videoUrl
             },
-            "https://hiddenlight-photography.com"
+            "*"
           );
           return;
         }
