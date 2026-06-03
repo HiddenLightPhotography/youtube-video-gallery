@@ -573,10 +573,30 @@
     function openVideo(videoUrl){
       if(!videoUrl) return;
 
+      /*
+        When this app is embedded in GoDaddy, ask the parent page to open YouTube.
+        This avoids YouTube trying to load inside the iframe context.
+      */
       try{
-        window.top.open(videoUrl, "_blank", "noopener,noreferrer");
-      }catch(err){
+        if(window.parent && window.parent !== window){
+          window.parent.postMessage(
+            {
+              type: "HLP_OPEN_VIDEO",
+              url: videoUrl
+            },
+            "https://hiddenlight-photography.com"
+          );
+          return;
+        }
+      }catch(err){}
+
+      /*
+        Direct Netlify fallback.
+      */
+      try{
         window.open(videoUrl, "_blank", "noopener,noreferrer");
+      }catch(err2){
+        window.location.href = videoUrl;
       }
     }
 
